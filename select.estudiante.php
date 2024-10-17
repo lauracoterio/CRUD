@@ -2,12 +2,12 @@
 include 'conexion.php';
 
 // Consulta SQL usando alias para evitar conflicto entre columnas con el mismo nombre
-$sql = "SELECT tbl_estudiante.identificacion, tbl_estudiante.nombres, tbl_estudiante.apellidos, 
-               tbl_carrera.nombre AS carrera_nombre, tbl_genero.nombre AS genero_nombre, 
-               tbl_estudiante.semestre, tbl_estudiante.fecha_de_ingreso
-        FROM tbl_estudiante
-        JOIN tbl_carrera ON tbl_estudiante.id_carrera = tbl_carrera.id_carrera
-        JOIN tbl_genero ON tbl_estudiante.id_genero = tbl_genero.id_genero";
+$sql = "SELECT tbl_estudiantes_e.identificacion, tbl_estudiantes_e.nombres, tbl_estudiantes_e.apellidos, 
+               tbl_carrera_e.nombre AS carrera_nombre, tbl_genero_e.nombre AS genero_nombre, 
+               tbl_estudiantes_e.semestre, tbl_estudiantes_e.fecha_de_ingreso
+        FROM tbl_estudiantes_e
+        JOIN tbl_carrera_e ON tbl_estudiantes_e.id_carrera = tbl_carrera_e.id_carrera
+        JOIN tbl_genero_e ON tbl_estudiantes_e.id_genero = tbl_genero_e.id_genero";
 
 $resultado = $conexion->query($sql);
 ?>
