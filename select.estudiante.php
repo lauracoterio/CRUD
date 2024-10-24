@@ -36,7 +36,7 @@ $resultado = $conexion->query($sql);
         }
 
         table, th, td {
-            border: 1px solid #000000 ;
+            border: 1px solid #000000;
         }
 
         th, td {
@@ -45,12 +45,8 @@ $resultado = $conexion->query($sql);
         }
 
         th {
-            background-color: #000000;
+            background-color: purple;
             color: white;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
         }
 
         tr:hover {
@@ -61,6 +57,16 @@ $resultado = $conexion->query($sql);
             text-align: center;
             font-size: 18px;
             margin-top: 20px;
+        }
+
+        button{
+            margin-left: 10px;
+        }
+
+        /* Estilos para los botones de imagen */
+        button img {
+            width: 20px;
+            height: 20px;
         }
     </style>
 </head>
@@ -79,6 +85,7 @@ if ($resultado->num_rows > 0) {
                 <th>Género</th>
                 <th>Semestre</th>
                 <th>Fecha de Ingreso</th>
+                <th>Acciones</th>
             </tr>";
     
     // Recorrer el resultado y mostrar cada fila
@@ -91,6 +98,16 @@ if ($resultado->num_rows > 0) {
                 <td>" . $row["genero_nombre"] . "</td>
                 <td>" . $row["semestre"] . "</td>
                 <td>" . $row["fecha_de_ingreso"] . "</td>
+                <td> 
+                 
+                    <a href='delete_estudiante.php?identificacion=" . $row['identificacion'] . "'
+                     onclick = 'return confirm (\'¿Estás seguro de que deseas eliminar al estudiante?\');'>
+                    <img src='icono/delete.png' alt='Eliminar'> 
+                   </a>
+
+
+                    
+                </td>
               </tr>";
     }
 
@@ -98,7 +115,7 @@ if ($resultado->num_rows > 0) {
 } else {
     echo "<div class='no-data'>No existen estudiantes.</div>";
 }
-
+    
 $conexion->close();
 ?>
 
