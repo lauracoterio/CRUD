@@ -59,14 +59,12 @@ $resultado = $conexion->query($sql);
             margin-top: 20px;
         }
 
-        button{
-            margin-left: 10px;
-        }
 
         /* Estilos para los botones de imagen */
-        button img {
+        img {
             width: 20px;
             height: 20px;
+            margin-left: 10px;
         }
     </style>
 </head>
@@ -100,10 +98,16 @@ if ($resultado->num_rows > 0) {
                 <td>" . $row["fecha_de_ingreso"] . "</td>
                 <td> 
                  
-                    <a href='delete_estudiante.php?identificacion=" . $row['identificacion'] . "'
-                     onclick = 'return confirm (\'¿Estás seguro de que deseas eliminar al estudiante?\');'>
-                    <img src='icono/delete.png' alt='Eliminar'> 
-                   </a>
+                   <form action='delete_estudiante.php' method='post' style='display:inline;' onsubmit='return confirm(\"¿Estás seguro de que deseas eliminar al estudiante?\");'>
+                        <input type='hidden' name='identificacion' value='" . $row['identificacion'] . "'>
+                        <button type='submit'><img src='icono/delete.png' alt='Eliminar'></button>
+                    </form>
+
+                 
+                     <form action='update_estudiante.php' method='post' style='display:inline;' onsubmit='return confirm(\"¿Estás seguro de que deseas actualizar al estudiante?\");'>
+                        <input type='hidden' name='identificacion' value='" . $row['identificacion'] . "'>
+                        <button type='submit'><img src='icono/update.png' alt='Update'></button>
+                    </form>
 
 
                     
