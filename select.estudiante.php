@@ -97,29 +97,34 @@ if ($resultado->num_rows > 0) {
                 <td>" . $row["semestre"] . "</td>
                 <td>" . $row["fecha_de_ingreso"] . "</td>
                 <td> 
-                 
                    <form action='delete_estudiante.php' method='post' style='display:inline;' onsubmit='return confirm(\"¿Estás seguro de que deseas eliminar al estudiante?\");'>
                         <input type='hidden' name='identificacion' value='" . $row['identificacion'] . "'>
                         <button type='submit'><img src='icono/delete.png' alt='Eliminar'></button>
                     </form>
 
-                 
                      <form action='update_estudiante.php' method='post' style='display:inline;' onsubmit='return confirm(\"¿Estás seguro de que deseas actualizar al estudiante?\");'>
                         <input type='hidden' name='identificacion' value='" . $row['identificacion'] . "'>
                         <button type='submit'><img src='icono/update.png' alt='Update'></button>
                     </form>
-
-
-                    
                 </td>
               </tr>";
     }
 
+    // Fila para el botón de inserción
+    echo "<tr>
+            <td colspan='8' style='text-align: center;'>
+                <form action='insert.estudiante.php' method='post' onsubmit='return confirm(\"¿Estás seguro de que deseas agregar un nuevo estudiante?\");'>
+                    <button type='submit'><img src='icono/insert.png' alt='Insert'></button>
+                </form>
+            </td>
+          </tr>";
+    
     echo "</table>";
-} else {
+}
+else {
     echo "<div class='no-data'>No existen estudiantes.</div>";
 }
-    
+
 $conexion->close();
 ?>
 
