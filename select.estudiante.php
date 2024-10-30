@@ -97,15 +97,16 @@ if ($resultado->num_rows > 0) {
                 <td>" . $row["semestre"] . "</td>
                 <td>" . $row["fecha_de_ingreso"] . "</td>
                 <td> 
-                   <form action='delete_estudiante.php' method='post' style='display:inline;' onsubmit='return confirm(\"¿Estás seguro de que deseas eliminar al estudiante?\");'>
-                        <input type='hidden' name='identificacion' value='" . $row['identificacion'] . "'>
-                        <button type='submit'><img src='icono/delete.png' alt='Eliminar'></button>
-                    </form>
+                   
+                   <a href='delete_estudiante.php?identificacion=" . $row['identificacion'] . "'
+                     onclick = 'return confirm (\'¿Estás seguro de que deseas eliminar al estudiante?\');'>
+                    <img src='icono/delete.png' alt='Eliminar'> 
+                   </a>
 
-                     <form action='update_estudiante.php' method='post' style='display:inline;' onsubmit='return confirm(\"¿Estás seguro de que deseas actualizar al estudiante?\");'>
-                        <input type='hidden' name='identificacion' value='" . $row['identificacion'] . "'>
-                        <button type='submit'><img src='icono/update.png' alt='Update'></button>
-                    </form>
+                        <a href='update.estudiante.php?identificacion=" . $row['identificacion'] . "'
+                     onclick = 'return confirm (\'¿Estás seguro de que deseas actualizar al estudiante?\');'>
+                    <img src='icono/update.png' alt='Update'> 
+                   </a>
                 </td>
               </tr>";
     }
@@ -113,9 +114,10 @@ if ($resultado->num_rows > 0) {
     // Fila para el botón de inserción
     echo "<tr>
             <td colspan='8' style='text-align: center;'>
-                <form action='insert.estudiante.php' method='post' onsubmit='return confirm(\"¿Estás seguro de que deseas agregar un nuevo estudiante?\");'>
-                    <button type='submit'><img src='icono/insert.png' alt='Insert'></button>
-                </form>
+                   <a href='insert.estudiante.php?identificacion=" . $row['identificacion'] . "'
+                     onclick = 'return confirm (\'¿Estás seguro de que deseas insertar un nuevo estudiante?\');'>
+                    <img src='icono/insert.png' alt='Insert'> 
+                   </a>
             </td>
           </tr>";
     
