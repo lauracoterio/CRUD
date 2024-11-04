@@ -14,7 +14,7 @@ if (isset($_POST['actualizar'])) { // Si se encuentra el método POST, capturar 
 
     // La consulta para actulizar los datos
     $sql = "UPDATE tbl_estudiantes_e
-    --se eligen los datos que se desean actualizar, no necesariamente deben ser tosos
+   
             SET nombres = '$nombres', apellidos = '$apellidos', semestre = '$semestre' 
             WHERE tbl_estudiantes_e.identificacion = '$identificacion'";
 

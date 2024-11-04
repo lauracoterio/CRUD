@@ -111,7 +111,6 @@ if ($resultado->num_rows > 0) {
               </tr>";
     }
 
-    // Fila para el botón de inserción
     echo "<tr>
             <td colspan='8' style='text-align: center;'>
                    <a href='insert.estudiante.php?identificacion=" . $row['identificacion'] . "'

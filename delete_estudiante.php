@@ -1,7 +1,7 @@
 <?php
 include 'conexion.php';
 
-    if (isset($_GET['identificacion'])) { // Proceso para eliminar estudiante
+    if ($_SERVER ['REQUEST_METHOD'] === 'GET' && isset ($_GET['identificacion'])) { // Proceso para eliminar estudiante
         // Obtener la identificación del estudiante a eliminar
         $identificacion = intval($_GET['identificacion']);
         
@@ -10,16 +10,13 @@ include 'conexion.php';
         
         // Ejecutar la consulta
         if ($conexion->query($sql) === TRUE) {
-            echo '<script>
-                swal("¡Estudiante Eliminado!", "El estudiante ha sido eliminado correctamente", "success");
-            </script>';
+            header ('Location: select.estudiante.php');
+            exit();
         } else {
-            echo '<script>
-                swal("Error", "No se pudo eliminar el estudiante", "error");
-            </script>';
+            header ('Locaton: select.estudiante.php?mensaje=hubo un error');
+            exit();
         }
     }
-
 
 $conexion->close();
 ?>
