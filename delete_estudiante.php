@@ -1,19 +1,31 @@
 <?php
 include 'conexion.php';
 
+
+/*identificacion: Este bloque comprueba que el método de la solicitud sea GET y que exista el parámetro identificacion en la URL. 
+Solo se ejecutará el bloque de eliminación si ambas condiciones son verdaderas. El método GET se usa aquí porque los datos se pasan a través de la URL.*/
     if ($_SERVER ['REQUEST_METHOD'] === 'GET' && isset ($_GET['identificacion'])) { // Proceso para eliminar estudiante
+
+
         // Obtener la identificación del estudiante a eliminar
+        /*La variable $identificacion almacena el valor de $_GET['identificacion'] convertido en un número entero con intval(). Esto ayuda a evitar inyecciones SQL al asegurar que solo se usen números.*/
         $identificacion = intval($_GET['identificacion']);
         
+
         // Consulta SQL para eliminar estudiante por identificación
+        /*Esta consulta elimina el registro en tbl_estudiantes_e donde el valor de identificacion coincida con el valor proporcionado.*/
         $sql = "DELETE FROM tbl_estudiantes_e WHERE identificacion = '$identificacion'";
         
         // Ejecutar la consulta
         if ($conexion->query($sql) === TRUE) {
+
+            /*Si la consulta se ejecuta correctamente, la página redirige al archivo select.estudiante.php (que podría listar los estudiantes).
+             header() envía un encabezado HTTP para redirigir, y exit() asegura que el script termine inmediatamente.*/
             header ('Location: select.estudiante.php');
             exit();
         } else {
-            header ('Locaton: select.estudiante.php?mensaje=hubo un error');
+            /*Si hay un error en la consulta, redirige a select.estudiante.php con un mensaje de error en la URL (?mensaje=hubo un error)*/
+            header ('Location: select.estudiante.php?mensaje=hubo un error');
             exit();
         }
     }

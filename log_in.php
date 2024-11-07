@@ -1,3 +1,47 @@
+<?php
+session_start();
+include 'conexion.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Capturamos el usuario y la contraseña ingresados
+    $nombre_usuario = $_POST["nombre_usuario"];
+    $password = $_POST["password"];
+
+    // Preparar la consulta SQL para obtener id y password del usuario
+    $stmt = $conexion->prepare("SELECT id, password FROM tbl_login WHERE nombre_usuario = ?");
+    
+    // Asociar el valor de $nombre_usuario al marcador de posición
+    $stmt->bind_param("s", $nombre_usuario);
+    $stmt->execute();
+
+    // Almacenamos el resultado
+    $stmt->store_result();
+
+    // Verificamos si existe algún resultado
+    if ($stmt->num_rows > 0) {
+        // Asociamos los resultados a variables
+        $stmt->bind_result($id, $hashed_password);
+        $stmt->fetch();
+
+        // Verificamos la contraseña ingresada contra el hash almacenado
+        if (password_verify($password, $hashed_password)) {
+            // Iniciamos sesión y redirigimos
+            $_SESSION["id"] = $id;
+            $_SESSION["nombre_usuario"] = $nombre_usuario;
+            header("location: select.estudiante.php");
+            exit();
+        } else {
+            echo "Error, contraseña incorrecta";
+        }
+    } else {
+        echo "Usuario no encontrado";
+    }
+
+    // Cerramos la conexión
+    $stmt->close();
+    $conexion->close();
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,29 +68,16 @@
 </head>
 <body>
 <div class="container usuario">
-    <!-- Título del formulario -->
     <p class="titulo"><i><b>Log in</b></i></p>
-<!--se abre al formulario-->
     <form action="" method="post">
-
-        <!-- Campo oculto de identificación -->
-         <!--inserta el valor de la identificacion del estudiante (obtenido de la base de datos) como el valor de este campo oculto.
-          Esto asegura que el sistema sabrá a qué registro debe aplicar las actualizaciones -->
-        <input type="hidden" name="id" value="<?php echo $fila['id']; ?>">
-
-       
         <label for="nombre_usuario">Nombre de usuario:</label><br>
-        <!--establece el valor predeterminado usando el valor de nombres obtenido del estudiante, para que el usuario vea el nombre actual y pueda actualizarlo si es necesario.-->
         <input type="text" id="nombre_usuario" name="nombre_usuario" required><br><br>
 
         <label for="password">Contraseña:</label><br>
-        <input type="text" id="password" name="password " required><br><br>
-
-        <label for="correo">Correo:</label><br>
-        <input type="correo" id="correo" name="correo" required><br><br>
+        <input type="password" id="password" name="password" required><br><br>
         
-        <input type="submit" name="Log_in" value="Log_in">
+        <input type="submit" name="Log_in" value="Log in">
     </form>
 </div>
 </body>
-</html>
+</html> 
