@@ -60,8 +60,6 @@ $conexion->close();
     <div class="container-custom col-12 col-md-6 col-lg-4">
         <p class="titulo fs-4 text-center mb-4"><i><b>Registrarse</b></i></p>
         <form action="" method="post">
-            <input type="hidden" name="id" value="<?php echo $fila['id']; ?>">
-
             <div class="mb-3">
                 <label for="nombre_usuario" class="form-label">Nombre de usuario:</label>
                 <input type="text" id="nombre_usuario" name="nombre_usuario" class="form-control" required>

@@ -48,36 +48,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log in</title>
+    <title>Registrarse</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
-        .container {
-            background-color: rgb(184, 137, 227);
+
+        .container-custom {
+            background-color: rgb(220, 162, 248);
             padding: 20px;
             margin: 20px auto;
-            width: 300px;
-            text-align: center;
-        }
-        .titulo {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-        .usuario {
-            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
-<div class="container usuario">
-    <p class="titulo"><i><b>Log in</b></i></p>
-    <form action="" method="post">
-        <label for="nombre_usuario">Nombre de usuario:</label><br>
-        <input type="text" id="nombre_usuario" name="nombre_usuario" required><br><br>
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="container-custom col-12 col-md-6 col-lg-4">
+        <p class="titulo fs-4 text-center mb-4"><i><b>LOG IN</b></i></p>
+        <form action="" method="post">
+            <div class="mb-3">
+                <label for="nombre_usuario" class="form-label">Nombre de usuario:</label>
+                <input type="text" id="nombre_usuario" name="nombre_usuario" class="form-control" required>
+            </div>
 
-        <label for="password">Contraseña:</label><br>
-        <input type="password" id="password" name="password" required><br><br>
-        
-        <input type="submit" name="Log_in" value="Log in">
-    </form>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña:</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+
+            <button type="submit" name="log in" class="btn btn-primary w-100">Log in</button>
+        </form>
+    </div>
 </div>
+
+<!-- Bootstrap JS (opcional) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html> 
+</html>

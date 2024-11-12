@@ -3,13 +3,20 @@ include 'conexion.php'; // Incluye el archivo de conexión a la base de datos
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') { //solo funciona si se llena el formulario por el método post
 
-    if (isset($_POST['crear_facultad'])) {
+    //isset: se usa para verificar si una variable está definida
+    if (isset($_POST['crear_facultad'])) { // verifica si el formulario contiene el campo crear_facultad
         // Proceso para crear facultad
-        $nombre = mysqli_real_escape_string($conexion, $_POST['nombre']);
+        //(seguridad) mysqli_real_escape_string es una función de PHP, evita que se pueda realizar una inyección SQL (permite que los datos ingrasados sean válidos, para que no llegen a dañar la base de datos)
+        //$conexion es la conexión a la base de datos.
+        //$_POST['nombre'] es el dato enviado desde el formulario, en este caso el valor que el usuario ha puesto en el campo "nombre".
+        $nombre = mysqli_real_escape_string($conexion, $_POST['nombre']); 
 
+        // comando SQL para insertar 
         $sql = "INSERT INTO tbl_facultad_e (id_facultad, nombre) VALUES (NULL, '$nombre')";
 
-        if ($conexion->query($sql) === TRUE) {
+
+        //query($sql) Este método ejecuta una consulta SQL en la base de datos
+        if ($conexion->query($sql) === TRUE) {//Este bloque verifica si la consulta SQL se ejecutó correctamente.
             echo "Facultad creada exitosamente";
         } else {
             echo "Error: " . $sql . "<br>" . $conexion->error;
@@ -22,13 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { //solo funciona si se llena el form
         $sql = "INSERT INTO tbl_carrera_e (nombre, id_facultad) VALUES ('$nombre', '$facultad')";
 
         if ($conexion->query($sql) === TRUE) {
-            echo '<script>
-                swal("¡Carrera!", "Carrera insertada exitosamente", "success");
-            </script>';
+            echo "Carrera insertada exitosamente";
         } else {
-            echo '<script>
-                swal("¡Carrera!", "Error al insertar la Carrera", "error");
-            </script>';
+            echo "Error al insertar la Carrera";
         }
     } elseif (isset($_POST['crear_estudiante'])) {
         // Proceso para crear estudiante
@@ -47,34 +50,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { //solo funciona si se llena el form
         VALUES ('$identificacion', '$nombres', '$apellidos', '$id_carrera', '$id_genero', '$semestre', '$telefono_celular', '$telefono_fijo', '$fecha_de_ingreso', '$saldo_en_deuda')";
 
         if ($conexion->query($sql) === TRUE) {
-            echo '<script>
-                swal("¡Estudiante!", "Estudiante matriculado exitosamente", "success");
-            </script>';
+            echo "Estudiante matriculado exitosamente";
         } else {
-            echo '<script>
-                swal("¡Estudiante!", "Error al matricular el estudiante", "error");
-            </script>';
+            echo "Error al matricular el estudiante";
         }
-     }elseif (isset($_POST['eliminar_estudiante'])) { // Proceso para eliminar estudiante
-        // Obtener la identificación del estudiante a eliminar
-        $identificacion = mysqli_real_escape_string($conexion, $_POST['identificacion']);
-        
-        // Consulta SQL para eliminar estudiante por identificación
-        $sql = "DELETE FROM tbl_estudiantes_e WHERE identificacion = '$identificacion'";
-        
-        // Ejecutar la consulta
-        if ($conexion->query($sql) === TRUE) {
-            echo '<script>
-                swal("¡Estudiante Eliminado!", "El estudiante ha sido eliminado correctamente", "success");
-            </script>';
-        } else {
-            echo '<script>
-                swal("Error", "No se pudo eliminar el estudiante", "error");
-            </script>';
-        }
-    }
-
-
+     }
 }
 
 $conexion->close();
@@ -83,8 +63,8 @@ $conexion->close();
 
 <?php
 include 'conexion.php';
-$sql = "SELECT id_facultad, nombre FROM tbl_facultad_e";
-$resultado = $conexion -> query($sql);
+$sql = "SELECT id_facultad, nombre FROM tbl_facultad_e";////Define una consulta SQL que selecciona las columnas id_facultad y nombre
+$resultado = $conexion -> query($sql);//Ejecuta la consulta en la base de datos y guarda el resultado en la variable $resultado
 ?>
 
 <?php
@@ -143,14 +123,15 @@ $resultado_genero = $conexion -> query($sql);
         <label for="nombre_carrera">Nombre de la Carrera:</label><br>
         <input type="text" id="nombre_carrera" name="nombre" required><br><br>
 
-        <label for="id_facultad">Facultad:</label><br>
+        <label for="id_facultad">Facultad:</label><br> <!--asigna un nombre al campo para que, al enviar el formulario, se pueda identificar este valor en PHP-->
         <select name="id_facultad" required>
       <option value ="">Seleccione una facultad</option>
       <?php //ABRIR PHP PARA PODER HACER EL CICLO
         
-       if ($resultado -> num_rows > 0) { //num rows es la encargada de mostrar las filas de una tabla
-        while ($fila = $resultado -> fetch_assoc()) {
-            echo  '<option value="'.$fila['id_facultad'].'">'.$fila['nombre'].'</option>';
+       if ($resultado -> num_rows > 0) { //Verifica si la consulta a la base de datos devolvió algún resultado. num_rows cuenta el número de filas en el resultado. Si es mayor a 0, significa que hay facultades en la base de datos.
+        //Este bucle while recorre cada fila del resultado de la consulta y extrae los datos de cada facultad.
+        while ($fila = $resultado -> fetch_assoc()) { //Para cada fila, genera una nueva opción en el menú desplegable
+            echo  '<option value="'.$fila['id_facultad'].'">'.$fila['nombre'].'</option>';//El valor que se enviará al servidor cuando se seleccione esta opción. 
         }
        }else {
         echo '<option value = ""> No hay facultades</option>';
@@ -219,20 +200,6 @@ $resultado_genero = $conexion -> query($sql);
     </form>
 </div>
 
-
-
-<div class="container estudiantes">
-    <p class="titulo">Eliminar Estudiante</p>
-    <form action="" method="post">
-        <label for="identificacion">Identificación:</label><br>
-        <input type="number" id="identificacion" name="identificacion" required><br><br>
-        <!-- Cambiar el valor del botón de envío para eliminar estudiante -->
-        <input type="submit" name="eliminar_estudiante" value="Eliminar estudiante">
-    </form>
-</div>
-
-
 <!-- SweetAlert2 JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 </body>
 </html>
