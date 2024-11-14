@@ -56,50 +56,53 @@ if (isset($_GET['identificacion'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Actualizar Estudiante</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
-        .container {
+        .container-custom {
             background-color: rgb(184, 137, 227);
             padding: 20px;
             margin: 20px auto;
-            width: 300px;
-            text-align: center;
-        }
-        .titulo {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-        .estudiantes {
-            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
-<div class="container estudiantes">
-    <!-- Título del formulario -->
-    <p class="titulo">Actualizar Estudiante</p>
-<!--se abre al formulario-->
-    <form action="" method="post">
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="container-custom col-12 col-md-6 col-lg-4">
+        <p class="titulo fs-4 text-center mb-4">Actualizar Estudiante</p>
+        <form action="" method="post">
+            <!-- Campo oculto de identificación -->
+            <input type="hidden" name="identificacion" value="<?php echo $fila['identificacion']; ?>">
 
-        <!-- Campo oculto de identificación -->
-         <!--inserta el valor de la identificacion del estudiante (obtenido de la base de datos) como el valor de este campo oculto.
-          Esto asegura que el sistema sabrá a qué registro debe aplicar las actualizaciones -->
-        <input type="hidden" name="identificacion" value="<?php echo $fila['identificacion']; ?>">
+            <!-- Campo de Nombres -->
+            <div class="mb-3">
+                <label for="nombres" class="form-label">Nombres:</label>
+                <input type="text" id="nombres" name="nombres" class="form-control" value="<?php echo $fila['nombres']; ?>" required>
+            </div>
 
-        <!-- Campo de Nombres -->
-        <label for="nombres">Nombres:</label><br>
-        <!--establece el valor predeterminado usando el valor de nombres obtenido del estudiante, para que el usuario vea el nombre actual y pueda actualizarlo si es necesario.-->
-        <input type="text" id="nombres" name="nombres" value="<?php echo $fila['nombres']; ?>" required><br><br>
+            <!-- Campo de Apellidos -->
+            <div class="mb-3">
+                <label for="apellidos" class="form-label">Apellidos:</label>
+                <input type="text" id="apellidos" name="apellidos" class="form-control" value="<?php echo $fila['apellidos']; ?>" required>
+            </div>
 
-        <!-- Campo de Apellidos -->
-        <label for="apellidos">Apellidos:</label><br>
-        <input type="text" id="apellidos" name="apellidos" value="<?php echo $fila['apellidos']; ?>" required><br><br>
+            <!-- Campo de Semestre -->
+            <div class="mb-3">
+                <label for="semestre" class="form-label">Semestre:</label>
+                <input type="number" id="semestre" name="semestre" class="form-control" value="<?php echo $fila['semestre']; ?>" required>
+            </div>
 
-        <!-- Campo de Semestre -->
-        <label for="semestre">Semestre:</label><br>
-        <input type="number" id="semestre" name="semestre" value="<?php echo $fila['semestre']; ?>" required><br><br>
-        
-        <input type="submit" name="actualizar" value="Actualizar Estudiante">
-    </form>
+            <!-- Botón de actualización -->
+            <button type="submit" name="actualizar" class="btn btn-primary w-100">Actualizar Estudiante</button>
+        </form>
+    </div>
 </div>
+
+<!-- Bootstrap JS (opcional) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

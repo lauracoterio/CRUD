@@ -1,38 +1,41 @@
 <?php
-include 'conexion.php'; // Incluye el archivo de conexión a la base de datos
+include 'conexion.php'; // Incluye el archivo de conexión a la base de datos.
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['registrarse'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Verifica si la solicitud fue enviada usando el método POST.
+    if (isset($_POST['registrarse'])) { // Verifica si se envió el formulario de registro.
 
         // Escapar los valores para evitar inyecciones SQL
-        $nombre_usuario = mysqli_real_escape_string($conexion, $_POST['nombre_usuario']);
-        $password = mysqli_real_escape_string($conexion, $_POST['password']);
-        $correo = mysqli_real_escape_string($conexion, $_POST['correo']);
+        $nombre_usuario = mysqli_real_escape_string($conexion, $_POST['nombre_usuario']); // Escapa el nombre de usuario para evitar inyecciones SQL.
+        $password = mysqli_real_escape_string($conexion, $_POST['password']); // Escapa la contraseña ingresada.
+        $correo = mysqli_real_escape_string($conexion, $_POST['correo']); // Escapa el correo ingresado.
 
         // Cifrar la contraseña
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT); // Cifra la contraseña usando un hash seguro.
 
-        // Preparar la consulta con placeholders
-        $stmt = $conexion->prepare("INSERT INTO tbl_login (nombre_usuario, password, correo) VALUES (?, ?, ?)");
+        // PREPARAR la consulta con placeholders
+        $stmt = $conexion->prepare("INSERT INTO tbl_login (nombre_usuario, password, correo) VALUES (?, ?, ?)"); 
+        // Prepara la consulta SQL con marcadores de posición para evitar inyecciones SQL.
 
-        // Asignar los parámetros
-        $stmt->bind_param("sss", $nombre_usuario, $hashed_password, $correo);
+        // ASIGNAR los parámetros
+        $stmt->bind_param("sss", $nombre_usuario, $hashed_password, $correo); 
+        // Vincula el nombre de usuario, contraseña cifrada y correo a los marcadores de posición de la consulta.
 
-        // Ejecutar la consulta
-        if ($stmt->execute()) {
-            echo "¡Registrado! El usuario ha sido registrado correctamente";
+        // EJECUTAR la consulta
+        if ($stmt->execute()) { // Ejecuta la consulta SQL.
+            echo "¡Registrado! El usuario ha sido registrado correctamente"; // Muestra un mensaje si el registro fue exitoso.
         } else {
-            echo "Error: No se pudo registrar el usuario";
+            echo "Error: No se pudo registrar el usuario"; // Muestra un mensaje si hubo un error en el registro.
         }
 
         // Cerrar la declaración preparada
-        $stmt->close();
+        $stmt->close(); // Cierra la declaración preparada.
     }
 }
 
 // Cerrar la conexión a la base de datos
-$conexion->close();
+$conexion->close(); // Cierra la conexión a la base de datos.
 ?>
+
 
 
 <!DOCTYPE html>

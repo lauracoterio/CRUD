@@ -1,47 +1,48 @@
 <?php
-session_start();
-include 'conexion.php';
+session_start(); // Inicia la sesión para almacenar y acceder a datos de sesión del usuario.
+include 'conexion.php'; // Incluye el archivo de conexión a la base de datos.
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Capturamos el usuario y la contraseña ingresados
-    $nombre_usuario = $_POST["nombre_usuario"];
-    $password = $_POST["password"];
+if ($_SERVER["REQUEST_METHOD"] == "POST") { // Verifica si la solicitud fue enviada usando el método POST.
+    // CAPTURAR el usuario y la contraseña ingresados
+    $nombre_usuario = $_POST["nombre_usuario"]; // Obtiene el nombre de usuario del formulario.
+    $password = $_POST["password"]; // Obtiene la contraseña ingresada.
 
-    // Preparar la consulta SQL para obtener id y password del usuario
-    $stmt = $conexion->prepare("SELECT id, password FROM tbl_login WHERE nombre_usuario = ?");
+    // PREPARAR la consulta SQL para obtener id y password del usuario
+    $stmt = $conexion->prepare("SELECT id, password FROM tbl_login WHERE nombre_usuario = ?"); 
+
     
-    // Asociar el valor de $nombre_usuario al marcador de posición
-    $stmt->bind_param("s", $nombre_usuario);
-    $stmt->execute();
+    $stmt->bind_param("s", $nombre_usuario); // VINCULA el nombre de usuario al marcador de posición.
+    $stmt->execute(); // EJECUTA la consulta SQL.
 
     // Almacenamos el resultado
-    $stmt->store_result();
+    $stmt->store_result(); 
 
     // Verificamos si existe algún resultado
-    if ($stmt->num_rows > 0) {
+    if ($stmt->num_rows > 0) { // Verifica si hay al menos una fila en el resultado.
         // Asociamos los resultados a variables
-        $stmt->bind_result($id, $hashed_password);
-        $stmt->fetch();
+        $stmt->bind_result($id, $hashed_password); // Vincula el resultado de la consulta a las variables.
+        $stmt->fetch(); // Obtiene los valores del resultado de la consulta.
 
         // Verificamos la contraseña ingresada contra el hash almacenado
-        if (password_verify($password, $hashed_password)) {
+        if (password_verify($password, $hashed_password)) { // Compara la contraseña ingresada con la almacenada en la base de datos.
             // Iniciamos sesión y redirigimos
-            $_SESSION["id"] = $id;
-            $_SESSION["nombre_usuario"] = $nombre_usuario;
-            header("location: select.estudiante.php");
-            exit();
+            $_SESSION["id"] = $id; // Guarda el ID del usuario en la sesión.
+            $_SESSION["nombre_usuario"] = $nombre_usuario; // Guarda el nombre de usuario en la sesión.
+            header("location: select.estudiante.php"); // Redirige al usuario a otra página.
+            exit(); // Termina el script para evitar ejecutar el resto del código.
         } else {
-            echo "Error, contraseña incorrecta";
+            echo "Error, contraseña incorrecta"; // Muestra un mensaje si la contraseña es incorrecta.
         }
     } else {
-        echo "Usuario no encontrado";
+        echo "Usuario no encontrado"; // Muestra un mensaje si no se encuentra el usuario.
     }
 
     // Cerramos la conexión
-    $stmt->close();
-    $conexion->close();
+    $stmt->close(); // Cierra la declaración preparada.
+    $conexion->close(); // Cierra la conexión a la base de datos.
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
